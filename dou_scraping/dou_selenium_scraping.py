@@ -6,6 +6,8 @@ from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import ElementNotVisibleException
 
 
+# TODO: consider adding DB support and turn this into telegram bot
+
 def scrape_dou_vacancies(city, category):
     """
     Scrapes info about job openings, then creates csv and writes that info into the file
@@ -53,6 +55,7 @@ def scrape_dou_vacancies(city, category):
     def write_to_csv(vacancies_list, file_name):
         """
         Writes vacancy details to csv file
+        Requires two arguments: list of dictionaries with scraped data and csv file name
         """
         csv_columns = ['name', 'company', 'info', 'link']
         try:
