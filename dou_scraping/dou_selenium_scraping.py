@@ -6,7 +6,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import ElementNotVisibleException
 
 
-# TODO: consider adding DB support and turn this into telegram bot
+# TODO: consider adding DB support and turning this into telegram bot
 
 def scrape_dou_vacancies(city, category):
     """
