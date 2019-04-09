@@ -2,6 +2,7 @@
 import csv
 import datetime
 from urllib.parse import quote
+
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import ElementNotVisibleException
@@ -21,6 +22,7 @@ def scrape_dou_vacancies(city, category):
     driver.implicitly_wait(5)
     print('Headless browser is initiated')
     driver.get(f'https://jobs.dou.ua/vacancies/?city={quote(city)}&category={category}')
+    print('Jobs.dou is open')
 
     def click_on_more_jobs_button():
         """
@@ -75,6 +77,7 @@ def scrape_dou_vacancies(city, category):
 
     data = get_vacancy_info()
     write_to_csv(data, csv_file_name)
+    print(f'\n{csv_file_name} file is created')
 
 
 scrape_dou_vacancies('Київ', 'QA')
