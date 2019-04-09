@@ -36,7 +36,7 @@ def scrape_dou_vacancies(city, category):
             while more_vacancies_button:
                 more_vacancies_button.click()
         except ElementNotVisibleException:
-            print("Scraping started\n")
+            print("Scraping has started\n")
 
     def get_vacancy_info():
         """
