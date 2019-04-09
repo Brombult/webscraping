@@ -12,7 +12,7 @@ from selenium.common.exceptions import ElementNotVisibleException
 
 def scrape_dou_vacancies(city, category):
     """
-    Scrapes info about job openings, then creates csv and writes that info into the file
+    Scrapes info about job openings, then writes that info into a csv file
     Requires two arguments: city and job category
     """
     csv_file_name = f'{city}_{category}_{datetime.date.today()}.csv'
@@ -38,7 +38,7 @@ def scrape_dou_vacancies(city, category):
 
     def get_vacancy_info():
         """
-        Gets every job openings on the page, returns list of dictionaries with collected info about job openings
+        Gets every job openings on the page, returns list of dictionaries with collected info about those job openings
         """
         click_on_more_jobs_button()
         all_vacancies = []
@@ -61,7 +61,7 @@ def scrape_dou_vacancies(city, category):
 
     def write_to_csv(vacancies_list, file_name):
         """
-        Writes vacancy details to csv file
+        Creates csv file with details about job openings
         Requires two arguments: list of dictionaries with scraped data and csv file name
         """
         csv_columns = ['name', 'company', 'info', 'link']
