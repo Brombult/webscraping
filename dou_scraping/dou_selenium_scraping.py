@@ -16,10 +16,12 @@ def scrape_dou_vacancies(city, category):
     Requires two arguments: city and job category
     """
     csv_file_name = f'{city}_{category}_{datetime.date.today()}.csv'
+
     options = Options()
     options.headless = True
     driver = webdriver.Chrome(options=options)
     driver.implicitly_wait(5)
+
     print('Headless browser is initiated')
     driver.get(f'https://jobs.dou.ua/vacancies/?city={quote(city)}&category={category}')
     print('Jobs.dou is open')
@@ -43,6 +45,7 @@ def scrape_dou_vacancies(city, category):
         click_on_more_jobs_button()
         all_vacancies = []
         vacancies_counter = 0
+
         try:
             vacancies = driver.find_elements_by_css_selector('#vacancyListId li')
             for vacancy in vacancies:
@@ -51,10 +54,12 @@ def scrape_dou_vacancies(city, category):
                 company = title.find_element_by_css_selector('.company')
                 info = vacancy.find_element_by_class_name('sh-info')
                 link = name.get_attribute('href')
+
                 vacancy_details_dict = {'name': name.text, 'company': company.text, 'info': info.text, 'link': link}
                 all_vacancies.append(vacancy_details_dict)
                 vacancies_counter += 1
                 print(f'Vacancies scraped: {vacancies_counter}')
+
             return all_vacancies
         finally:
             driver.quit()
