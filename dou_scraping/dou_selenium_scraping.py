@@ -1,4 +1,4 @@
-"""Using headless browser to scrape vacancies from jobs.dou.ua"""
+"""Using headless browser to scrape job openings from jobs.dou.ua"""
 import csv
 import datetime
 from urllib.parse import quote
@@ -26,9 +26,8 @@ def scrape_dou_vacancies(city, category):
 
     def click_on_more_jobs_button():
         """
-        Since there's no pagination on jobs.dou:
-        this function clicks through all "more jobs" buttons on the page so every job opening is present
-        and can be scraped
+        Since there's no pagination on jobs.dou this function clicks through all "more jobs" buttons
+        so every job opening is present on the page and can be scraped
         """
         try:
             more_vacancies_button = driver.find_element_by_css_selector('.more-btn > a')
