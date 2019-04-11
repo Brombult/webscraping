@@ -78,7 +78,7 @@ def scrape_dou_vacancies(city, category):
                 writer.writeheader()
                 for vacancy in vacancies_list:
                     writer.writerow(vacancy)
-            print(f'\n{csv_file_name} file is created')
+            print(f'\n{csv_file_name} file has been created')
         except IOError:
             print('I/O Error')
 
