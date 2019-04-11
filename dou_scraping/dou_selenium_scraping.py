@@ -21,9 +21,9 @@ def scrape_dou_vacancies(city, category):
     options.headless = True
     driver = webdriver.Chrome(options=options)
     driver.implicitly_wait(5)
-
     print('Headless browser is initiated')
-    driver.get(f'https://jobs.dou.ua/vacancies/?city={quote(city)}&category={category}')
+
+    driver.get(f'https://jobs.dou.ua/vacancies/?city={quote(city)}&category={quote(category)}')
     print('Jobs.dou is open')
 
     def click_on_more_jobs_button():
@@ -61,6 +61,8 @@ def scrape_dou_vacancies(city, category):
                 print(f'Vacancies scraped: {vacancies_counter}')
 
             return all_vacancies
+        except Exception as exc:
+            print(exc)
         finally:
             driver.quit()
 
