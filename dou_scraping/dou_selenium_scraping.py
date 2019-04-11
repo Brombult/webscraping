@@ -76,12 +76,12 @@ def scrape_dou_vacancies(city, category):
                 writer.writeheader()
                 for vacancy in vacancies_list:
                     writer.writerow(vacancy)
+            print(f'\n{csv_file_name} file is created')
         except IOError:
             print('I/O Error')
 
     data = get_vacancy_info()
     write_to_csv(data, csv_file_name)
-    print(f'\n{csv_file_name} file is created')
 
 
 scrape_dou_vacancies('Київ', 'QA')
