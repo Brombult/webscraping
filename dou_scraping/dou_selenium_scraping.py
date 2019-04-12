@@ -1,7 +1,6 @@
 """Using headless browser to scrape job openings from jobs.dou.ua"""
 import csv
 import datetime
-from urllib.parse import quote
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -31,7 +30,7 @@ def scrape_dou_vacancies(city, category):
     elif category in relocation_category_list:
         driver.get(f'{jobs_dou_url}?relocation')
     else:
-        driver.get(f'{jobs_dou_url}?city={quote(city)}&category={quote(category)}')
+        driver.get(f'{jobs_dou_url}?city={city}&category={category}')
     print('Jobs.dou is open')
 
     def click_on_more_jobs_button():
