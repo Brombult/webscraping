@@ -16,6 +16,9 @@ def scrape_dou_vacancies(city, category):
     Requires two arguments: city and job category
     """
     csv_file_name = f'{city}_{category}_{datetime.date.today()}.csv'
+    jobs_dou_url = 'https://jobs.dou.ua/vacancies/'
+    beginners_category_list = ['Начинающим', 'Початківцям', 'For beginners']
+    relocation_category_list = ['За рубежом', 'За кордоном', 'Relocation']
 
     options = Options()
     options.headless = True
@@ -23,7 +26,12 @@ def scrape_dou_vacancies(city, category):
     driver.implicitly_wait(5)
     print('Headless browser is initiated')
 
-    driver.get(f'https://jobs.dou.ua/vacancies/?city={quote(city)}&category={quote(category)}')
+    if category in beginners_category_list:
+        driver.get(f'{jobs_dou_url}?city={city}&beginners')
+    elif category in relocation_category_list:
+        driver.get(f'{jobs_dou_url}?relocation')
+    else:
+        driver.get(f'{jobs_dou_url}?city={quote(city)}&category={quote(category)}')
     print('Jobs.dou is open')
 
     def click_on_more_jobs_button():
