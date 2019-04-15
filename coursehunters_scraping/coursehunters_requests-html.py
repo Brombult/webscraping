@@ -43,7 +43,7 @@ def scrape_coursehunters(start_url):
 
 scrape_coursehunters('https://coursehunters.net/backend/python?page=1')
 
-every_article.sort(key=lambda d: to_datetime(d['added']))  # sorting articles by year of publication
+every_article.sort(key=lambda date: to_datetime(date['added']))  # sorting articles by year of publication
 
 #  saving articles to csv file
 data_frame = DataFrame(every_article, columns=csv_columns)
