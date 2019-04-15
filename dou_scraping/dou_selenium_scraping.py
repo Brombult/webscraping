@@ -1,10 +1,11 @@
 """Using headless browser to scrape job openings from jobs.dou.ua"""
-import csv
 import datetime
+import sys
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.common.exceptions import ElementNotVisibleException
+from selenium.common.exceptions import ElementNotVisibleException, WebDriverException
+from pandas import DataFrame
 
 
 # TODO: consider adding DB support and turning this into telegram bot
@@ -15,6 +16,7 @@ def scrape_dou_vacancies(city, category):
     Requires two arguments: city and job category
     """
     csv_file_name = f'{city}_{category}_{datetime.date.today()}.csv'
+    csv_columns = ['name', 'company', 'info', 'link']
     jobs_dou_url = 'https://jobs.dou.ua/vacancies/'
     beginners_category_list = ['Начинающим', 'Початківцям', 'For beginners']
     relocation_category_list = ['За рубежом', 'За кордоном', 'Relocation']
@@ -44,6 +46,8 @@ def scrape_dou_vacancies(city, category):
                 more_vacancies_button.click()
         except ElementNotVisibleException:
             print("Scraping has started\n")
+        except WebDriverException:
+            sys.exit('Webdriver bugged out, please run the script again')
 
     def get_vacancy_info():
         """
@@ -73,24 +77,10 @@ def scrape_dou_vacancies(city, category):
         finally:
             driver.quit()
 
-    def write_to_csv(vacancies_list, file_name):
-        """
-        Creates csv file with details about job openings
-        Requires two arguments: list of dictionaries with scraped data and csv file name
-        """
-        csv_columns = ['name', 'company', 'info', 'link']
-        try:
-            with open(file_name, 'w') as csv_file:
-                writer = csv.DictWriter(csv_file, fieldnames=csv_columns)
-                writer.writeheader()
-                for vacancy in vacancies_list:
-                    writer.writerow(vacancy)
-            print(f'\n{csv_file_name} file has been created')
-        except IOError:
-            print('I/O Error')
-
     data = get_vacancy_info()
-    write_to_csv(data, csv_file_name)
+    data_frame = DataFrame(data, columns=csv_columns)
+    data_frame.to_csv(csv_file_name)
+    print(f'\n{csv_file_name} file has been created')
 
 
 scrape_dou_vacancies('Київ', 'QA')
