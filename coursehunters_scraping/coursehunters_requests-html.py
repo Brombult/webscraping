@@ -1,3 +1,4 @@
+"""Scrapes coursehunters.net using requests-html library"""
 from urllib.parse import urljoin
 
 from pandas import DataFrame, to_datetime
@@ -12,6 +13,7 @@ def scrape_coursehunters(start_url):
     session = HTMLSession()
     r = session.get(start_url)
     all_articles_on_page = []
+
     articles = r.html.find('article')
     for article in articles:
         article_title = article.find('h3[itemprop="headline"]', first=True).text
@@ -28,7 +30,7 @@ def scrape_coursehunters(start_url):
 
     try:
         next_page_elem = r.html.find('a[rel="next"]', first=True).attrs['href']
-        next_page_link = urljoin(start_url, next_page_elem)
+        next_page_link = urljoin(start_url, next_page_elem)  # creating absolute link to next page
     except AttributeError:
         pass  # no more pages left
     else:
@@ -42,6 +44,7 @@ scrape_coursehunters('https://coursehunters.net/backend/python?page=1')
 
 every_article.sort(key=lambda d: to_datetime(d['added']))  # sorting articles by year of publication
 
+#  saving articles to csv file
 data_frame = DataFrame(every_article, columns=csv_columns)
 try:
     data_frame.to_csv(csv_file_name)
