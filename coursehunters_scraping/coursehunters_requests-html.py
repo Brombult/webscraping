@@ -1,11 +1,12 @@
 """Scrapes coursehunters.net using requests-html library"""
+import datetime
 from urllib.parse import urljoin
 
 from pandas import DataFrame, to_datetime
 from requests_html import HTMLSession
 
 every_article = []
-csv_file_name = 'data.csv'
+csv_file_name = f'data_{datetime.date.today()}.csv'
 csv_columns = ['title', 'description', 'language', 'number of lessons', 'duration', 'added', 'link']
 
 
