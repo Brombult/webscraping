@@ -5,7 +5,7 @@ from urllib.parse import urljoin
 from pandas import DataFrame, to_datetime
 from requests_html import HTMLSession
 
-every_article = []
+every_article = []  # this variable will hold every articles from every page
 csv_file_name = f'data_{datetime.date.today()}.csv'
 csv_columns = ['title', 'description', 'language', 'number of lessons', 'duration', 'added', 'link']
 
@@ -15,6 +15,7 @@ def scrape_coursehunters(start_url):
     r = session.get(start_url)
     all_articles_on_page = []
 
+    #  scraping info for every article on the page
     articles = r.html.find('article')
     for article in articles:
         article_title = article.find('h3[itemprop="headline"]', first=True).text
@@ -29,6 +30,7 @@ def scrape_coursehunters(start_url):
                         'added': article_add_date, 'link': article_link}
         all_articles_on_page.append(article_info)
 
+    #  creating next page link and recursively calling same function to scrape next page
     try:
         next_page_elem = r.html.find('a[rel="next"]', first=True).attrs['href']
         next_page_link = urljoin(start_url, next_page_elem)  # creating absolute link to next page
@@ -37,6 +39,7 @@ def scrape_coursehunters(start_url):
     else:
         scrape_coursehunters(next_page_link)
 
+    #  adding articles from single page to list of articles from previous pages
     for a in all_articles_on_page:
         every_article.append(a)
 
