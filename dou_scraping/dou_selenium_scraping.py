@@ -79,8 +79,12 @@ def scrape_dou_vacancies(city, category):
 
     data = get_vacancy_info()
     data_frame = DataFrame(data, columns=csv_columns)
-    data_frame.to_csv(csv_file_name)
-    print(f'\n{csv_file_name} file has been created')
+    try:
+        data_frame.to_csv(csv_file_name)
+    except IOError:
+        print('I/O error')
+    else:
+        print(f'\n{csv_file_name} file was created')
 
 
 scrape_dou_vacancies('Київ', 'QA')
