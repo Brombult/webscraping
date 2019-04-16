@@ -78,6 +78,7 @@ def scrape_dou_vacancies(city, category):
         finally:
             driver.quit()
 
+    # saving vacancies info to csv file
     data = get_vacancy_info()
     data_frame = DataFrame(data, columns=csv_columns)
     try:
