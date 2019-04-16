@@ -5,7 +5,7 @@ from urllib.parse import urljoin
 from pandas import DataFrame, to_datetime
 from requests_html import HTMLSession
 
-every_article = []  # this variable will hold every articles from every page
+every_article = []  # this variable will hold every article from every page
 csv_file_name = f'data_{datetime.date.today()}.csv'
 csv_columns = ['title', 'description', 'language', 'number of lessons', 'duration', 'date posted', 'link']
 
