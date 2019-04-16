@@ -47,6 +47,7 @@ def scrape_dou_vacancies(city, category):
         except ElementNotVisibleException:
             print("Scraping has started\n")
         except WebDriverException:
+            driver.quit()
             sys.exit('Webdriver bugged out, please run the script again')
 
     def get_vacancy_info():
