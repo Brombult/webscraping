@@ -7,7 +7,7 @@ from requests_html import HTMLSession
 
 every_article = []  # this variable will hold every articles from every page
 csv_file_name = f'data_{datetime.date.today()}.csv'
-csv_columns = ['title', 'description', 'language', 'number of lessons', 'duration', 'added', 'link']
+csv_columns = ['title', 'description', 'language', 'number of lessons', 'duration', 'date posted', 'link']
 
 
 def scrape_coursehunters(start_url):
@@ -27,13 +27,13 @@ def scrape_coursehunters(start_url):
         article_link = article.find('a.standard-course-block__russian', first=True).attrs['href']
         article_info = {'title': article_title, 'description': article_description, 'language': article_lang,
                         'number of lessons': article_lessons_number, 'duration': article_duration,
-                        'added': article_add_date, 'link': article_link}
+                        'date posted': article_add_date, 'link': article_link}
         all_articles_on_page.append(article_info)
 
     #  creating next page link and recursively calling same function to scrape next page
     try:
         next_page_elem = r.html.find('a[rel="next"]', first=True).attrs['href']
-        next_page_link = urljoin(start_url, next_page_elem)  # creating absolute link to next page
+        next_page_link = urljoin(start_url, next_page_elem)  # creating absolute link for next page
     except AttributeError:
         pass  # no more pages left
     else:
@@ -46,7 +46,7 @@ def scrape_coursehunters(start_url):
 
 scrape_coursehunters('https://coursehunters.net/backend/python?page=1')
 
-every_article.sort(key=lambda date: to_datetime(date['added']))  # sorting articles by year of publication
+every_article.sort(key=lambda date: to_datetime(date['date posted']))  # sorting articles by year of publication
 
 #  saving articles to csv file
 data_frame = DataFrame(every_article, columns=csv_columns)
