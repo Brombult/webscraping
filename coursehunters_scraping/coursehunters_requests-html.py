@@ -5,7 +5,7 @@ from urllib.parse import urljoin
 from pandas import DataFrame, to_datetime
 from requests_html import HTMLSession
 
-every_article = []  # this variable will hold every article from every page
+every_article_on_the_site = []  # this variable will hold every article from every page
 csv_file_name = f'data_{datetime.date.today()}.csv'
 csv_columns = ['title', 'description', 'language', 'number of lessons', 'duration', 'date posted', 'link']
 
@@ -41,15 +41,16 @@ def scrape_coursehunters(start_url):
 
     #  adding articles from single page to list of articles from previous pages
     for a in all_articles_on_page:
-        every_article.append(a)
+        every_article_on_the_site.append(a)
 
 
 scrape_coursehunters('https://coursehunters.net/backend/python?page=1')
 
-every_article.sort(key=lambda date: to_datetime(date['date posted']))  # sorting articles by year of publication
+# sorting articles by year of publication
+every_article_on_the_site.sort(key=lambda article: to_datetime(article['date posted']))
 
-#  saving articles to csv file
-data_frame = DataFrame(every_article, columns=csv_columns)
+#  saving articles info to csv file
+data_frame = DataFrame(every_article_on_the_site, columns=csv_columns)
 try:
     data_frame.to_csv(csv_file_name)
 except IOError:
