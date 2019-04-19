@@ -36,4 +36,4 @@ class ScanlibsSpider(Spider):
             }
 
         next_page = response.xpath('.//a[contains(@class, "next")]/@href').extract_first()
-        yield Request(next_page, callback=self.parse)
+        yield Request(next_page)
