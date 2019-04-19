@@ -1,3 +1,7 @@
+"""
+Spider that scrapes book and video info from scanlibs.com
+Can be run by "scrapy runspider scanlibs_standalone_spider.py -o items.csv" command in terminal
+"""
 from scrapy import Spider, Request
 from w3lib.html import replace_escape_chars, remove_tags, replace_tags
 
