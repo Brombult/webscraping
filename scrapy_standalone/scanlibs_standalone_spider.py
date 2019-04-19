@@ -26,7 +26,7 @@ class ScanlibsSpider(Spider):
             else:
                 content_dirty = article.xpath('.//*[@class="entry-content"]').extract_first()
                 content = replace_tags(replace_escape_chars(content_dirty), '  '
-                                       ).replace('(more…)', '').replace('Read More', '')
+                                       ).replace('(more…)', '').replace('Read More', '').strip()
 
             yield {
                 'Title': title,
