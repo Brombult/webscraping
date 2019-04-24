@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 import scrapy
+from scrapy.loader import ItemLoader
+
+from dou_calendar.items import DouCalendarItem
 
 
 class EventsSpider(scrapy.Spider):
@@ -8,6 +11,7 @@ class EventsSpider(scrapy.Spider):
     start_urls = [f'https://dou.ua/calendar/page-{num}/' for num in range(1, 17)]
 
     def parse(self, response):
+        l = ItemLoader(item=DouCalendarItem(), response=response)
         events = response.css('article')
         for event in events:
             title = event.css('h2.title > a::text').extract_first().strip()
@@ -20,9 +24,11 @@ class EventsSpider(scrapy.Spider):
             where = event.xpath('//div[@class="when-and-where"]').extract_first().split()[5].strip()
             link = event.xpath('.//h2[@class="title"]/a/@href').extract_first()
 
-            yield {'Title': title,
-                   "Description": desc,
-                   'Date': date,
-                   "Price": price,
-                   'Where': where,
-                   'Link': link, }
+            l.add_value('Title', title)
+            l.add_value("Description", desc)
+            l.add_value('Date', date)
+            l.add_value("Price", price)
+            l.add_value('Where', where)
+            l.add_value('Link', link)
+
+            return l.load_item()

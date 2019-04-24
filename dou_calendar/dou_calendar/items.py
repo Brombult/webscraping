@@ -9,6 +9,9 @@ import scrapy
 
 
 class DouCalendarItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+    Title = scrapy.Field()
+    Description = scrapy.Field()
+    Date = scrapy.Field()
+    Price = scrapy.Field()
+    Where = scrapy.Field()
+    Link = scrapy.Field()
