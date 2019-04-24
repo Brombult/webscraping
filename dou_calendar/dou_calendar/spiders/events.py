@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+"""
+Spider that scrapes Dou Calendar events
+Can be run with "scrapy crawl events -o events.csv" command in terminal
+"""
 import scrapy
 from scrapy.loader import ItemLoader
 
