@@ -44,16 +44,17 @@ def scrape_coursehunters(start_url):
         every_article_on_the_site.append(a)
 
 
-scrape_coursehunters('https://coursehunters.net/backend/python?page=1')
+if __name__ == '__main__':
+    scrape_coursehunters('https://coursehunters.net/backend/python?page=1')
 
-# sorting articles by year of publication
-every_article_on_the_site.sort(key=lambda article: to_datetime(article['date posted']))
+    # sorting articles by year of publication
+    every_article_on_the_site.sort(key=lambda article: to_datetime(article['date posted']))
 
-#  saving articles info to csv file
-data_frame = DataFrame(every_article_on_the_site, columns=csv_columns)
-try:
-    data_frame.to_csv(csv_file_name)
-except IOError:
-    print('I/O Error')
-else:
-    print(f'{csv_file_name} file was created')
+    #  saving articles info to csv file
+    data_frame = DataFrame(every_article_on_the_site, columns=csv_columns)
+    try:
+        data_frame.to_csv(csv_file_name)
+    except IOError:
+        print('I/O Error')
+    else:
+        print(f'{csv_file_name} file was created')

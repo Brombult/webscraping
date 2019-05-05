@@ -89,4 +89,5 @@ def scrape_dou_vacancies(city, category):
         print(f'\n{csv_file_name} file was created')
 
 
-scrape_dou_vacancies('Київ', 'QA')
+if __name__ == '__main__':
+    scrape_dou_vacancies('Київ', 'QA')
