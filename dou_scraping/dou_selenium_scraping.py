@@ -2,6 +2,7 @@
 import datetime
 import sys
 
+from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import ElementNotVisibleException, WebDriverException
@@ -58,16 +59,19 @@ def scrape_dou_vacancies(city, category):
         all_vacancies = []
         vacancies_counter = 0
 
-        try:
-            vacancies = driver.find_elements_by_css_selector('#vacancyListId li')
-            for vacancy in vacancies:
-                title = vacancy.find_element_by_css_selector('div.title')
-                name = title.find_element_by_css_selector('a.vt')
-                company = title.find_element_by_css_selector('.company')
-                info = vacancy.find_element_by_class_name('sh-info')
-                link = name.get_attribute('href')
+        soup = BeautifulSoup(driver.page_source, 'lxml')
 
-                vacancy_details_dict = {'name': name.text, 'company': company.text, 'info': info.text, 'link': link}
+        try:
+            vacancies = soup.find_all(name='li', class_='l-vacancy')
+            for vacancy in vacancies:
+                title = vacancy.find(name='div', class_='title')
+                name = title.find(name='a', class_='vt')
+                company = title.find(name='a', class_='company')
+                info = vacancy.find(name='div', class_='sh-info')
+                link = name.attrs['href']
+
+                vacancy_details_dict = {
+                    'name': name.text, 'company': company.text, 'info': info.text.strip(), 'link': link}
                 all_vacancies.append(vacancy_details_dict)
                 vacancies_counter += 1
                 print(f'Vacancies scraped: {vacancies_counter}')
