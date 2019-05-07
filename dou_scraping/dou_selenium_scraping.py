@@ -96,8 +96,6 @@ def get_vacancies_info(driver):
             vacancies_counter += 1
             print(f'Vacancies scraped: {vacancies_counter}')
 
-        return all_vacancies
-
     except Exception as exc:
         print(exc)
     finally:
