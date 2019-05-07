@@ -6,8 +6,8 @@ from pandas import DataFrame, to_datetime
 from requests_html import HTMLSession
 
 every_article_on_the_site = []  # this variable will hold every article from every page
-csv_file_name = f'data_{datetime.date.today()}.csv'
-csv_columns = ['title', 'description', 'language', 'number of lessons', 'duration', 'date posted', 'link']
+CSV_FILE_NAME = f'data_{datetime.date.today()}.csv'
+CSV_COLUMNS = ['title', 'description', 'language', 'number of lessons', 'duration', 'date posted', 'link']
 
 
 def scrape_coursehunters(start_url):
@@ -51,10 +51,10 @@ if __name__ == '__main__':
     every_article_on_the_site.sort(key=lambda article: to_datetime(article['date posted']))
 
     #  saving articles info to csv file
-    data_frame = DataFrame(every_article_on_the_site, columns=csv_columns)
+    data_frame = DataFrame(every_article_on_the_site, columns=CSV_COLUMNS)
     try:
-        data_frame.to_csv(csv_file_name)
+        data_frame.to_csv(CSV_FILE_NAME)
     except IOError:
         print('I/O Error')
     else:
-        print(f'{csv_file_name} file was created')
+        print(f'{CSV_FILE_NAME} file was created')
