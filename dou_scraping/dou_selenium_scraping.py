@@ -123,6 +123,6 @@ def save_data_to_csv(data, csv_file_name, csv_columns):
 
 
 if __name__ == '__main__':
-    driver, file_name = open_dou_vacancies(init_headless_driver(), category=CATEGORY_NAME, city=CITY)
+    driver, file_name = open_dou_vacancies(driver=init_headless_driver(), category=CATEGORY_NAME, city=CITY)
     vacancies = get_vacancy_info(driver)
     save_data_to_csv(vacancies, file_name, CSV_COLUMNS_NAME)
