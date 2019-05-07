@@ -71,7 +71,7 @@ def click_on_more_jobs_button(driver):
     return driver
 
 
-def get_vacancy_info(driver):
+def get_vacancies_info(driver):
     """
     Gets every job openings on the page.
     Returns list of dictionaries with collected info those job openings
@@ -98,6 +98,7 @@ def get_vacancy_info(driver):
             print(f'Vacancies scraped: {vacancies_counter}')
 
         return all_vacancies
+
     except Exception as exc:
         print(exc)
     finally:
@@ -124,5 +125,5 @@ def save_data_to_csv(data, csv_file_name, csv_columns):
 
 if __name__ == '__main__':
     driver, file_name = open_dou_vacancies(driver=init_headless_driver(), category=CATEGORY_NAME, city=CITY)
-    vacancies = get_vacancy_info(driver)
-    save_data_to_csv(vacancies, file_name, CSV_COLUMNS_NAME)
+    vacancies = get_vacancies_info(driver)
+    save_data_to_csv(data=vacancies, csv_file_name=file_name, csv_columns=CSV_COLUMNS_NAME)
