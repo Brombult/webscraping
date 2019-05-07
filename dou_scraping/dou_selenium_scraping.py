@@ -1,6 +1,6 @@
 """Using headless browser to scrape job openings from jobs.dou.ua"""
 import datetime
-import sys
+import argparse
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -9,12 +9,14 @@ from selenium.common.exceptions import ElementNotVisibleException, WebDriverExce
 from pandas import DataFrame
 
 JOBS_DOU_URL = 'https://jobs.dou.ua/vacancies/'
-BEGINNERS_CATEGORY_LIST = ['Начинающим', 'Початківцям', 'For beginners']
-RELOCATION_CATEGORY_LIST = ['За рубежом', 'За кордоном', 'Relocation']
+BEGINNERS_CATEGORY_LIST = ['начинающим', 'початківцям', 'for beginners']
+RELOCATION_CATEGORY_LIST = ['за рубежом', 'за кордоном', 'relocation']
 CSV_COLUMNS_NAME = ['name', 'company', 'info', 'link']
 
-CATEGORY_NAME = "QA"
-CITY = "Kiev"
+parser = argparse.ArgumentParser()
+parser.add_argument('--category', help="job category to search vacancies for (e.g. 'QA' or 'Python')", default='QA')
+parser.add_argument('--city', help="city to search vacancies in", default='Kiev')
+args = parser.parse_args()
 
 
 def init_headless_driver():
@@ -41,9 +43,9 @@ def open_dou_vacancies(driver, category, city):
     """
     csv_file_name = f'{city}_{category}_{datetime.date.today()}.csv'
 
-    if category in BEGINNERS_CATEGORY_LIST:
+    if category.lower() in BEGINNERS_CATEGORY_LIST:
         driver.get(f'{JOBS_DOU_URL}?city={city}&beginners')
-    elif category in RELOCATION_CATEGORY_LIST:
+    elif category.lower() in RELOCATION_CATEGORY_LIST:
         driver.get(f'{JOBS_DOU_URL}?relocation')
     else:
         driver.get(f'{JOBS_DOU_URL}?city={city}&category={category}')
@@ -62,11 +64,8 @@ def click_on_more_jobs_button(driver):
         more_vacancies_button = driver.find_element_by_css_selector('.more-btn > a')
         while more_vacancies_button:
             more_vacancies_button.click()
-    except ElementNotVisibleException:
+    except (ElementNotVisibleException, WebDriverException):
         print("Scraping has started\n")
-    except WebDriverException:
-        driver.quit()
-        sys.exit('Webdriver bugged out, please run the script again')
 
     return driver
 
@@ -124,6 +123,6 @@ def save_data_to_csv(data, csv_file_name, csv_columns):
 
 
 if __name__ == '__main__':
-    driver, file_name = open_dou_vacancies(driver=init_headless_driver(), category=CATEGORY_NAME, city=CITY)
+    driver, file_name = open_dou_vacancies(driver=init_headless_driver(), category=args.category, city=args.city)
     vacancies = get_vacancies_info(driver)
     save_data_to_csv(data=vacancies, csv_file_name=file_name, csv_columns=CSV_COLUMNS_NAME)
