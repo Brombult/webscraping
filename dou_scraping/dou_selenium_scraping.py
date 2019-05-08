@@ -1,6 +1,7 @@
 """Using headless browser to scrape job openings from jobs.dou.ua"""
 import datetime
 import argparse
+import sys
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -100,6 +101,9 @@ def get_vacancies_info(driver):
         print(exc)
     finally:
         driver.quit()
+
+    if vacancies_counter == 0:
+        sys.exit('No vacancies were scraped, please check your category/city input')
 
     return all_vacancies
 
