@@ -14,11 +14,6 @@ BEGINNERS_CATEGORY_LIST = ['начинающим', 'початківцям', 'fo
 RELOCATION_CATEGORY_LIST = ['за рубежом', 'за кордоном', 'relocation']
 CSV_COLUMNS_NAME = ['name', 'company', 'info', 'link']
 
-parser = argparse.ArgumentParser()
-parser.add_argument('--category', help="job category to search vacancies for (e.g. 'QA' or 'Python')", default='QA')
-parser.add_argument('--city', help="city to search vacancies in", default='Kiev')
-args = parser.parse_args()
-
 
 def init_headless_driver():
     """
@@ -125,6 +120,11 @@ def save_data_to_csv(data, csv_file_name, csv_columns):
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--category', help="job category to search vacancies for (e.g. 'QA' or 'Python')", default='QA')
+    parser.add_argument('--city', help="city to search vacancies in", default='Kiev')
+    args = parser.parse_args()
+
     driver, file_name = open_dou_vacancies(driver=init_headless_driver(), category=args.category, city=args.city)
     vacancies = get_vacancies_info(driver)
     save_data_to_csv(data=vacancies, csv_file_name=file_name, csv_columns=CSV_COLUMNS_NAME)
